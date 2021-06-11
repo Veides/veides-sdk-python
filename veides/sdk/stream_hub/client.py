@@ -58,10 +58,10 @@ class StreamHubClient(BaseClient):
         :return bool
         """
         if not isinstance(agent, str):
-            raise TypeError('agent name should be a string')
+            raise TypeError('agent client id should be a string')
 
         if len(agent) == 0:
-            raise ValueError('agent name should be at least 1 length')
+            raise ValueError('agent client id should be at least 1 length')
 
         if not isinstance(name, str):
             raise TypeError('trail name should be a string')
