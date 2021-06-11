@@ -3,14 +3,14 @@ import logging
 import paho.mqtt.client as paho
 
 from veides.sdk.stream_hub.base_client import BaseClient
-from veides.sdk.stream_hub.properties import UserProperties, ConnectionProperties
+from veides.sdk.stream_hub.properties import AuthProperties, ConnectionProperties
 from veides.sdk.stream_hub.models import Trail, TrailTimestamp
 
 
 class StreamHubClient(BaseClient):
     def __init__(
             self,
-            user_properties,
+            auth_properties,
             connection_properties,
             logger=None,
             mqtt_logger=None,
@@ -20,8 +20,8 @@ class StreamHubClient(BaseClient):
         """
         Extends BaseClient with Veides Stream Hub features
 
-        :param user_properties: Properties related to user
-        :type user_properties: UserProperties
+        :param auth_properties: Auth related properties
+        :type auth_properties: AuthProperties
         :param connection_properties: Properties related to Veides Stream Hub connection
         :type connection_properties: ConnectionProperties
         :param logger: Custom SDK logger
@@ -33,8 +33,8 @@ class StreamHubClient(BaseClient):
         """
         BaseClient.__init__(
             self,
-            username=user_properties.username,
-            token=user_properties.token,
+            username=auth_properties.username,
+            token=auth_properties.token,
             host=connection_properties.host,
             capath=connection_properties.capath,
             logger=logger,

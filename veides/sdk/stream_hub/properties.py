@@ -2,7 +2,7 @@ import os
 from veides.sdk.stream_hub.exceptions import ConfigurationException
 
 
-class UserProperties:
+class AuthProperties:
     def __init__(self, username, token):
         """
         :param username: User's name
@@ -24,23 +24,23 @@ class UserProperties:
     @staticmethod
     def from_env():
         """
-        Returns UserProperties instance built from env variables. Required variables are:
-            1. VEIDES_USER_NAME: users's name
-            2. VEIDES_USER_TOKEN: user's token
+        Returns AuthProperties instance built from env variables. Required variables are:
+            1. VEIDES_AUTH_USER_NAME: users's name
+            2. VEIDES_AUTH_USER_TOKEN: user's token
 
         :raises ConfigurationException: If required variables are not provided
-        :return UserProperties
+        :return AuthProperties
         """
-        username = os.getenv('VEIDES_USER_NAME', None)
-        token = os.getenv('VEIDES_USER_TOKEN', None)
+        username = os.getenv('VEIDES_AUTH_USER_NAME', None)
+        token = os.getenv('VEIDES_AUTH_USER_TOKEN', None)
 
         if username is None:
-            raise ConfigurationException("Missing 'VEIDES_USER_NAME' variable in env")
+            raise ConfigurationException("Missing 'VEIDES_AUTH_USER_NAME' variable in env")
 
         if token is None:
-            raise ConfigurationException("Missing 'VEIDES_USER_TOKEN' variable in env")
+            raise ConfigurationException("Missing 'VEIDES_AUTH_USER_TOKEN' variable in env")
 
-        return UserProperties(username, token)
+        return AuthProperties(username, token)
 
 
 class ConnectionProperties:

@@ -1,4 +1,4 @@
-from veides.sdk.stream_hub import StreamHubClient, UserProperties, ConnectionProperties
+from veides.sdk.stream_hub import StreamHubClient, AuthProperties, ConnectionProperties
 from time import sleep
 import logging
 import argparse
@@ -18,12 +18,12 @@ if __name__ == "__main__":
         connection_properties=ConnectionProperties(host=args.host),
         # If you want to provide connection properties in environment, use below line instead
         # connection_properties=ConnectionProperties.from_env()
-        user_properties=UserProperties(
+        auth_properties=AuthProperties(
             username=args.username,
             token=args.token,
         ),
-        # If you want to provide user properties in environment, use below line instead
-        # user_properties=UserProperties.from_env()
+        # If you want to provide auth properties in environment, use below line instead
+        # auth_properties=AuthProperties.from_env()
         # Set DEBUG level to see received and sent data. Level is logging.WARN by default
         log_level=logging.DEBUG
     )

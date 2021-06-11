@@ -1,6 +1,6 @@
 import pytest
 from paho.mqtt.client import MQTT_ERR_SUCCESS
-from veides.sdk.stream_hub import StreamHubClient, UserProperties, ConnectionProperties
+from veides.sdk.stream_hub import StreamHubClient, AuthProperties, ConnectionProperties
 from veides.sdk.stream_hub.models import TrailTimestamp
 
 
@@ -49,7 +49,7 @@ def connected_client(mocker, mocked_paho_client, username, token, hostname):
     mocker.patch("paho.mqtt.client.Client", return_value=mocked_paho_client)
 
     client = StreamHubClient(
-        UserProperties(username=username, token=token),
+        AuthProperties(username=username, token=token),
         ConnectionProperties(host=hostname)
     )
     client.connected.set()
@@ -64,7 +64,7 @@ def not_connected_client(mocker, mocked_paho_client, username, token, hostname):
     mocker.patch("paho.mqtt.client.Client", return_value=mocked_paho_client)
 
     client = StreamHubClient(
-        UserProperties(username=username, token=token),
+        AuthProperties(username=username, token=token),
         ConnectionProperties(host=hostname)
     )
 
