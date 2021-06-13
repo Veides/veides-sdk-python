@@ -12,7 +12,7 @@ from tests.unit.fixtures import (
 )
 
 
-def test_should_set_event_when_connected(not_connected_client, hostname):
+def test_stream_hub_client_should_set_event_when_connected(not_connected_client, hostname):
     def side_effect(*_, **__):
         not_connected_client.client.on_connect(None, None, None, 0)
 
@@ -24,7 +24,7 @@ def test_should_set_event_when_connected(not_connected_client, hostname):
     assert not_connected_client.is_connected() is True
 
 
-def test_should_stop_loop_and_clear_event_after_disconnect(connected_client):
+def test_stream_hub_client_should_stop_loop_and_clear_event_after_disconnect(connected_client):
     def side_effect(*_, **__):
         connected_client.client.on_disconnect(None, None, 0)
 
@@ -37,15 +37,15 @@ def test_should_stop_loop_and_clear_event_after_disconnect(connected_client):
     assert connected_client.is_connected() is False
 
 
-def test_should_setup_credentials(not_connected_client, username, token):
+def test_stream_hub_client_should_setup_credentials(not_connected_client, username, token):
     not_connected_client.client.username_pw_set.assert_called_once_with(username, token)
 
 
-def test_should_setup_tls_context(not_connected_client):
+def test_stream_hub_client_should_setup_tls_context(not_connected_client):
     not_connected_client.client.tls_set_context.assert_called_once()
 
 
-def test_should_use_trail_handler_when_trail_received(mocker, agent_client_id, connected_client):
+def test_stream_hub_client_should_use_trail_handler_when_trail_received(mocker, agent_client_id, connected_client):
     trail_name = 'some_trail'
 
     msg = MQTTMessage()
@@ -61,7 +61,7 @@ def test_should_use_trail_handler_when_trail_received(mocker, agent_client_id, c
     func.assert_called_once()
 
 
-def test_should_not_use_trail_handler_when_different_trail_received(agent_client_id, mocker, connected_client):
+def test_stream_hub_client_should_not_use_trail_handler_when_different_trail_received(agent_client_id, mocker, connected_client):
     trail_name = 'some_trail'
     other_trail_name = 'other_trail'
 
@@ -78,7 +78,7 @@ def test_should_not_use_trail_handler_when_different_trail_received(agent_client
     func.assert_not_called()
 
 
-def test_should_not_use_trail_handler_when_trail_for_other_agent_received(agent_client_id, mocker, connected_client):
+def test_stream_hub_client_should_not_use_trail_handler_when_trail_for_other_agent_received(agent_client_id, mocker, connected_client):
     trail_name = 'some_trail'
     other_agent = 'other_agent'
 
@@ -95,7 +95,7 @@ def test_should_not_use_trail_handler_when_trail_for_other_agent_received(agent_
     func.assert_not_called()
 
 
-def test_on_trail_should_accept_specific_parameters(agent_client_id, connected_client):
+def test_stream_hub_client_on_trail_should_accept_specific_parameters(agent_client_id, connected_client):
     def handler():
         pass
 
@@ -119,6 +119,6 @@ def test_on_trail_should_accept_specific_parameters(agent_client_id, connected_c
     ('id', None, None),
     ('id', None, lambda: 1),
 ])
-def test_on_trail_should_raise_error_when_given_invalid_parameter(agent, trail_name, func, connected_client):
+def test_stream_hub_client_on_trail_should_raise_error_when_given_invalid_parameter(agent, trail_name, func, connected_client):
     with pytest.raises(Exception):
         connected_client.on_trail(agent, trail_name, func)

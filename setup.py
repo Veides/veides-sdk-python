@@ -8,7 +8,7 @@ with open('README.md', encoding='utf-8') as f:
 setup(
     name='veides-sdk',
     version='0.1.0',
-    description='API and Service Python SDK for Veides',
+    description='API and Stream Hub Python SDK for Veides',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/Veides/veides-sdk-python',
@@ -36,5 +36,6 @@ setup(
     include_package_data=True,
     install_requires=[
         'paho-mqtt==1.5.1',
+        'requests>=2.25.0',
     ],
 )
