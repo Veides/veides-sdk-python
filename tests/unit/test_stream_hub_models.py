@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime
-from veides.sdk.stream_hub.models import Trail, TrailTimestamp
+from veides.sdk.stream_hub.models import Trail, Timestamp
 from tests.unit.fixtures import trail_timestamp
 
 
@@ -17,7 +17,7 @@ def test_trail_should_be_created(name, value):
     assert trail.name == name
     assert trail.value == value
 
-    assert isinstance(trail.timestamp, TrailTimestamp)
+    assert isinstance(trail.timestamp, Timestamp)
     assert trail.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') == '2021-01-01T12:00:00Z'
 
 

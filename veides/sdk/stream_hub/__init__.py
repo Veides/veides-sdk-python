@@ -1,4 +1,4 @@
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 
 from veides.sdk.stream_hub.client import StreamHubClient
 from veides.sdk.stream_hub.base_client import BaseClient

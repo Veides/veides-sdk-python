@@ -122,3 +122,82 @@ def test_stream_hub_client_on_trail_should_accept_specific_parameters(agent_clie
 def test_stream_hub_client_on_trail_should_raise_error_when_given_invalid_parameter(agent, trail_name, func, connected_client):
     with pytest.raises(Exception):
         connected_client.on_trail(agent, trail_name, func)
+
+
+def test_stream_hub_client_should_use_event_handler_when_event_received(mocker, agent_client_id, connected_client):
+    event_name = 'some_event'
+
+    msg = MQTTMessage()
+    msg.topic = f'agent/{agent_client_id}/event/{event_name}'.encode('utf-8')
+    msg.payload = json.dumps({'message': 'Some message', 'timestamp': '2021-01-01T12:00:00Z'}).encode('utf-8')
+
+    func = mocker.stub('some_event_handler')
+
+    connected_client.on_event(agent_client_id, event_name, func)
+
+    connected_client._on_event(None, None, msg)
+
+    func.assert_called_once()
+
+
+def test_stream_hub_client_should_not_use_event_handler_when_different_event_received(agent_client_id, mocker, connected_client):
+    event_name = 'some_event'
+    other_event_name = 'other_event'
+
+    msg = MQTTMessage()
+    msg.topic = f'agent/{agent_client_id}/event/{other_event_name}'.encode('utf-8')
+    msg.payload = json.dumps({'message': 'Some message', 'timestamp': '2021-01-01T12:00:00Z'}).encode('utf-8')
+
+    func = mocker.stub('some_event_handler')
+
+    connected_client.on_event(agent_client_id, event_name, func)
+
+    connected_client._on_event(None, None, msg)
+
+    func.assert_not_called()
+
+
+def test_stream_hub_client_should_not_use_event_handler_when_event_for_other_agent_received(agent_client_id, mocker, connected_client):
+    event_name = 'some_event'
+    other_agent = 'other_agent'
+
+    msg = MQTTMessage()
+    msg.topic = f'agent/{other_agent}/event/{event_name}'.encode('utf-8')
+    msg.payload = json.dumps({'message': 'Some message', 'timestamp': '2021-01-01T12:00:00Z'}).encode('utf-8')
+
+    func = mocker.stub('some_event_handler')
+
+    connected_client.on_event(agent_client_id, event_name, func)
+
+    connected_client._on_event(None, None, msg)
+
+    func.assert_not_called()
+
+
+def test_stream_hub_client_on_event_should_accept_specific_parameters(agent_client_id, connected_client):
+    def handler():
+        pass
+
+    agent = agent_client_id
+    event_name = 'some_event_name'
+
+    connected_client.on_event(agent, event_name, handler)
+
+
+@pytest.mark.parametrize("agent,event_name,func", [
+    ('id', '', None),
+    ('', 'name', lambda: None),
+    ('id', {}, lambda: None),
+    ({}, 'name', lambda: None),
+    (123, 'name', lambda: None),
+    ('id', '', lambda: None),
+    ('id', 123, 123),
+    ('id', '', ''),
+    ('', '', ''),
+    ('id', [], []),
+    ('id', None, None),
+    ('id', None, lambda: 1),
+])
+def test_stream_hub_client_on_event_should_raise_error_when_given_invalid_parameter(agent, event_name, func, connected_client):
+    with pytest.raises(Exception):
+        connected_client.on_event(agent, event_name, func)

@@ -2,16 +2,16 @@ import pytest
 from paho.mqtt.client import MQTT_ERR_SUCCESS
 from veides.sdk.api import ApiClient, AuthProperties, ConfigurationProperties
 from veides.sdk.stream_hub import StreamHubClient, AuthProperties as StreamHubAuthProperties, ConnectionProperties
-from veides.sdk.stream_hub.models import TrailTimestamp
+from veides.sdk.stream_hub.models import Timestamp
 
 
 TIMESTAMP = '2021-01-01T12:00:00Z'
-trail_timestamp = TrailTimestamp.from_string(TIMESTAMP)
+trail_timestamp = Timestamp.from_string(TIMESTAMP)
 
 
 @pytest.fixture()
 def agent_client_id():
-    return 'id'
+    return 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 
 
 @pytest.fixture()

@@ -33,8 +33,14 @@ if __name__ == "__main__":
     def on_trail(agent, trail):
         print(agent, trail)
 
+    def on_event(agent, event):
+        print(agent, event)
+
     # Set a handler for trail
     client.on_trail(args.id, 'uptime', on_trail)
+
+    # Set a handler for event
+    client.on_event(args.id, 'ready_to_rock', on_event)
 
     finish = False
 
